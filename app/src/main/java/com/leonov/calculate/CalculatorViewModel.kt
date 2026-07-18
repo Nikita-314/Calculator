@@ -2,19 +2,25 @@ package com.leonov.calculate
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-class CalculatorViewModel {
-    val state = mutableStateOf(
+class CalculatorViewModel: ViewModel() {
+    private val _state = MutableStateFlow(
         Display(
             expression= "46x8",
             result= "360"
         )
     )
+    val state = _state.asStateFlow()
 
     fun processCommand(command: CalculatorCommand) {
         Log.d("CalculatorViewModel","Command: $command")
         when(command) {
-            CalculatorCommand.Clear -> {}
+            CalculatorCommand.Clear -> {
+                _state.value = Display("", "")
+            }
             CalculatorCommand.Evaluate -> {}
             is CalculatorCommand.Input -> {}
         }
