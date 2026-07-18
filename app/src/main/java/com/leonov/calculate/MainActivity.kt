@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.leonov.calculate.ui.theme.CalculateTheme
-import com.leonov.calculate.Calculate
+import com.leonov.calculate.Calculator
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CalculateTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Calculate(
+                    Calculator(
                         modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
                     )
                 }
