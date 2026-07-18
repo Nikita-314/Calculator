@@ -1,7 +1,9 @@
 package com.leonov.calculate
 
 import android.content.pm.ModuleInfo
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -24,6 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+
+// mutableStateOf указывает на то что значение может быть изменено
+// State<String> указывает на то что значение будет строкой
+var expression = mutableStateOf("46x8")
+var expressionResult = mutableStateOf("360")
 
 @Composable
 fun Calculate(
@@ -50,13 +59,14 @@ fun Calculate(
             horizontalAlignment = Alignment.End,
         ) {
             Text(
-                text= "46x8",
+                // value нужен чтобы получить значение из State<String>
+                text= expression.value,
                 fontSize = 36.sp,
                 fontWeight= FontWeight.SemiBold,
                 color=MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
-                text="360",
+                text=expressionResult.value,
                 fontSize = 17.sp,
                 fontWeight= FontWeight.SemiBold,
                 color=MaterialTheme.colorScheme.onPrimaryContainer
@@ -102,7 +112,23 @@ fun Calculate(
         ){
             Box(
                 modifier= Modifier.weight(1f)
+                // при нажатии на элемент нужно чтобы его фон тоже обрезался в круг, поэтому 
+                //мы сначала обрезаем его в круг, а потом добавляем кнопку
                     .clip(CircleShape)
+                    // код, который мы напишем в фигурных скобках будет выполняться
+                    // при клике на данный элемент
+                    .clickable{
+                        // тэги нужны для того чтобы легко ориентироваться в журнале логирования
+                        // первый тэг - это название приложения, второй тэг - это название элемента
+                        // package:mine tag=:Calculator 
+                        // tag=: означает что logТег должен в точности совпадать с этой строкой
+                        // tag: будет содержать определённую строчку
+                        Log.d("Calculator", "The AC Button is cliced ")
+                        // обращаемся к свойству value и кладём в него новое значение
+                        expression.value = ""
+                        expressionResult.value = ""
+                   
+                    }
                     .background(MaterialTheme.colorScheme.secondary)
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center,
