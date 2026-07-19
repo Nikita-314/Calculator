@@ -59,12 +59,15 @@ fun Calculator(
                 is CalculatorState.Error -> {
                     Text(
                         text= currentState.expression,
+                        // для корректного отображения высота строки должна быть равна размеру шрифта
+                        lineHeight = 36.sp,
                         fontSize = 36.sp,
                         fontWeight= FontWeight.SemiBold,
                         color=MaterialTheme.colorScheme.error
                     )
                     Text(
                         text="",
+                        lineHeight = 17.sp,
                         fontSize = 17.sp,
                         fontWeight= FontWeight.SemiBold,
                         color=MaterialTheme.colorScheme.onPrimaryContainer
@@ -74,12 +77,14 @@ fun Calculator(
                 is CalculatorState.Input -> {
                     Text(
                         text= currentState.expension,
+                        lineHeight = 36.sp,
                         fontSize = 36.sp,
                         fontWeight= FontWeight.SemiBold,
                         color=MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
                         text=currentState.result,
+                        lineHeight = 17.sp,
                         fontSize = 17.sp,
                         fontWeight= FontWeight.SemiBold,
                         color=MaterialTheme.colorScheme.onPrimaryContainer
@@ -88,12 +93,14 @@ fun Calculator(
                 is CalculatorState.Success -> {
                     Text(
                     text= currentState.result,
+                    lineHeight = 36.sp,
                     fontSize = 36.sp,
                     fontWeight= FontWeight.SemiBold,
                     color=MaterialTheme.colorScheme.onPrimaryContainer
                 )
                     Text(
                         text="",
+                        lineHeight = 17.sp,
                         fontSize = 17.sp,
                         fontWeight= FontWeight.SemiBold,
                         color=MaterialTheme.colorScheme.onPrimaryContainer
