@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.mariuszgromada.math.mxparser.Expression
 import kotlin.random.Random
 
 class CalculatorViewModel: ViewModel() {
@@ -22,12 +23,13 @@ class CalculatorViewModel: ViewModel() {
                 _state.value = CalculatorState.Initial
             }
             CalculatorCommand.Evaluate -> {
-                val isError = Random.nextBoolean()
-                _state.value = if(isError) {
-                    CalculatorState.Error("100/0")
+                val result = evaluate()
+                _state.value = if (result != null) {
+                    CalculatorState.Success(result= result)
                 } else {
-                    CalculatorState.Success("100")
+                    CalculatorState.Error(expression=expression)
                 }
+
             }
             is CalculatorCommand.Input -> {
                 val symbol= if(command.symbol != Symbol.PARENTHESIS) {
@@ -39,10 +41,18 @@ class CalculatorViewModel: ViewModel() {
 
                 _state.value = CalculatorState.Input(
                     expension = expression,
-                    result = "100"
+                    result = evaluate() ?: ""
                 )
             }
         }
+    }
+    private fun evaluate(): String? {
+        return expression.replace('x', '*')
+            .replace(',', '.')
+            .let { Expression(it) }
+            .calculate()
+            .takeIf { it.isFinite() } ?.toString()
+
     }
     private fun getCorrectParenthesis(): String {
         val openCount = expression.count{it == '('}
@@ -89,14 +99,14 @@ enum class Symbol(val value: String) {
     DIGIT_9("9")     ,
     ADD("+"),
     SUBTRACT("-"),
-    MULTIPLY("*"),
-    DIVIDE("/"),
+    MULTIPLY("x"),
+    DIVIDE("÷"),
     PERCENT("%"),
     POWER("^"),
     FACTORIAL("!"),
     SQRT("√"),
     PI("π") ,
-    DOT("."),
+    DOT(","),
     PARENTHESIS("()"),
 }
 data class Display(
